@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── Root scoped to promptpack ─────────────────────────── */
+.pp-root {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #020617; /* slate-950 */
+  color: #e2e8f0;            /* slate-200 */
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ─── Custom Scrollbar ────────────────────────────────────── */
+.pp-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.pp-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pp-scroll::-webkit-scrollbar-thumb {
+  background: #334155; /* slate-700 */
+  border-radius: 99px;
+}
+.pp-scroll::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* slate-600 */
+}
+
+/* ─── Sidebar mobile drawer ───────────────────────────────── */
+.pp-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+  animation: pp-fade-in 0.2s ease;
+}
+.pp-sidebar-drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  z-index: 50;
+  animation: pp-slide-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pp-slide-in {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* ─── Prompt Card ─────────────────────────────────────────── */
+.pp-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.pp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px -12px rgba(6, 182, 212, 0.12);
+}
+
+/* ─── Variable token inside prompt text ──────────────────── */
+.pp-var {
+  color: #22d3ee;           /* cyan-400 */
+  background-color: rgba(6, 182, 212, 0.1);
+  border-radius: 4px;
+  padding: 0 3px;
+  font-weight: 500;
+}
+
+/* ─── Copy button states ─────────────────────────────────── */
+.pp-copy-btn {
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.pp-copy-btn:hover:not(.pp-copied) {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: #22d3ee;
+  color: #22d3ee;
+}
+.pp-copy-btn.pp-copied {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: #10b981;
+  color: #10b981;
+}
+
+/* ─── Search input ────────────────────────────────────────── */
+.pp-search:focus {
+  outline: none;
+  border-color: #22d3ee;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
+}
+
+/* ─── Category nav item ──────────────────────────────────── */
+.pp-nav-item {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.pp-nav-item:hover:not(.pp-nav-active) {
+  background: rgba(255,255,255,0.04);
+  color: #f1f5f9;
+}
+.pp-nav-active {
+  background: rgba(6, 182, 212, 0.1);
+  color: #22d3ee;
+  border-right: 2px solid #22d3ee;
+}
+
+/* ─── Badge ───────────────────────────────────────────────── */
+.pp-badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── Grid layout ─────────────────────────────────────────── */
+.pp-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  .pp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1280px) {
+  .pp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ─── Shimmer for empty state ─────────────────────────────── */
+@keyframes pp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.pp-empty-pulse {
+  animation: pp-pulse 2s ease infinite;
+}

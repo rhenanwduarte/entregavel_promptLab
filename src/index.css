@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: theme('colors.background');
+    color: theme('colors.text');
+    font-family: theme('fontFamily.heading');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+
+  /* Sem overlay orgânico, estética HUD/Instrumento Limpo */
+  .noise-overlay {
+    display: none;
+  }
+
+  /* Painéis de vidro / Superfícies embaçadas */
+  .glass-panel {
+    background: rgba(250, 248, 245, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .glass-panel-dark {
+    background: rgba(13, 13, 18, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  /* Animação para AudioWave (Protocolo Emocional / Card 3 etc) */
+  @keyframes wave {
+
+    0%,
+    100% {
+      height: 10%;
+    }
+
+    50% {
+      height: 100%;
+    }
+  }
+
+  .animate-wave {
+    animation: wave 1s ease-in-out infinite;
+  }
+}

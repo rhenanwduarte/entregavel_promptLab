@@ -1,124 +1,98 @@
-import { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, Sparkles } from 'lucide-react';
-import Sidebar, { MobileMenuButton } from './Sidebar';
-import PromptCard from './PromptCard';
+import React, { useState } from 'react';
 import { categories, prompts } from './data';
-import './promptpack.css';
+import Sidebar from './Sidebar';
+import PromptCard from './PromptCard';
+import { Search, Terminal, Cpu } from 'lucide-react';
 
-export default function Dashboard() {
-  const [activeCategoryId, setActiveCategoryId] = useState(categories[0].id);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const Dashboard = () => {
+  const [activeCategory, setActiveCategory] = useState('cosmetics');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const activeCategory = categories.find((c) => c.id === activeCategoryId);
+  const filteredPrompts = prompts.filter(p =>
+    p.categoryId === activeCategory &&
+    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const filteredPrompts = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    return prompts.filter((p) => {
-      const matchesCategory = p.categoryId === activeCategoryId;
-      if (!q) return matchesCategory;
-      return (
-        matchesCategory &&
-        (p.title.toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q))
-      );
-    });
-  }, [activeCategoryId, searchQuery]);
+  const category = categories.find(c => c.id === activeCategory);
 
   return (
-    <div className="pp-root flex h-screen overflow-hidden">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans relative">
+
+      {/* Camadas de GLOW Atmosférico */}
+      <div className="fixed top-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[150px] rounded-full pointer-events-none z-0 animate-pulse" />
+      <div className="fixed bottom-[-10%] left-[20%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none z-0" />
+
       <Sidebar
-        activeCategoryId={activeCategoryId}
-        onSelect={(id) => { setActiveCategoryId(id); setSearchQuery(''); }}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        categories={categories}
       />
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        {/* Top bar */}
-        <header className="shrink-0 flex items-center gap-4 px-6 py-4 border-b border-slate-800/60 bg-[#020617]/80 backdrop-blur-sm">
-          <MobileMenuButton onClick={() => setSidebarOpen(true)} />
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 bg-grid-white/[0.02]">
 
-          {/* Breadcrumb / title */}
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] tracking-[0.15em] uppercase font-semibold text-slate-600 mb-0.5">
-              Promptpack
-            </p>
-            <h1 className="text-slate-100 font-bold text-[17px] leading-none truncate">
-              {activeCategory?.label}
-            </h1>
+        {/* Header Tech */}
+        <header className="h-28 flex items-center justify-between px-12 border-b border-white/5 bg-[#020617]/40 backdrop-blur-2xl">
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-cyan-500 blur-lg opacity-20 animate-pulse" />
+              <div className="relative p-4 bg-[#0f172a] border border-cyan-500/30 rounded-2xl">
+                <Cpu className="text-cyan-400" size={28} />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-4xl font-black text-white tracking-tighter italic uppercase">{category?.label}</h1>
+                <div className="h-2 w-2 bg-cyan-500 rounded-full shadow-[0_0_10px_#06b6d4]" />
+              </div>
+              <p className="text-[10px] text-cyan-500/60 font-black tracking-[0.4em] uppercase mt-1">Neural Engine Prompt Data</p>
+            </div>
           </div>
 
-          {/* Prompt count badge */}
-          <span className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/60 text-[11px] font-medium text-slate-400">
-            <Sparkles size={11} className="text-cyan-400" />
-            {filteredPrompts.length} prompt{filteredPrompts.length !== 1 ? 's' : ''}
-          </span>
+          <div className="hidden lg:flex items-center gap-8 bg-black/20 border border-white/5 px-6 py-3 rounded-2xl">
+            <div className="text-center">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Status</p>
+              <p className="text-xs font-black text-emerald-400 uppercase">Synchronized</p>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div className="text-center">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Database</p>
+              <p className="text-xs font-black text-white uppercase">{filteredPrompts.length} Units</p>
+            </div>
+          </div>
         </header>
 
-        {/* Search + filter bar */}
-        <div className="shrink-0 px-6 py-4 border-b border-slate-800/40 bg-[#020617]/60">
-          <div className="relative max-w-md">
-            <Search
-              size={15}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
-            />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={`Search ${activeCategory?.label} prompts…`}
-              className="pp-search w-full bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm rounded-xl pl-9 pr-4 py-2.5 transition-all"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors text-sm font-medium"
-              >
-                ×
-              </button>
-            )}
-          </div>
-        </div>
+        <div className="flex-1 overflow-y-auto p-12 custom-scrollbar relative">
+          <div className="max-w-7xl mx-auto">
 
-        {/* Prompt grid */}
-        <div className="flex-1 overflow-y-auto pp-scroll px-6 py-6">
-          {filteredPrompts.length > 0 ? (
-            <div className="pp-grid">
-              {filteredPrompts.map((card) => (
-                <PromptCard key={card.id} card={card} />
+            {/* Search Lab Style */}
+            <div className="relative mb-20 max-w-3xl">
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur opacity-25 group-focus-within:opacity-100 transition duration-1000" />
+              <div className="relative flex items-center bg-[#0f172a]/80 border border-white/10 rounded-2xl">
+                <Search className="ml-6 text-slate-500" size={22} />
+                <input
+                  type="text"
+                  placeholder={`Accessing ${category?.label} database...`}
+                  className="w-full bg-transparent py-6 px-6 text-xl focus:outline-none text-white placeholder:text-slate-700 font-light"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <div className="mr-6 px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-[10px] font-mono text-slate-500">
+                  CTRL + K
+                </div>
+              </div>
+            </div>
+
+            {/* Grid com animação suave */}
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-12">
+              {filteredPrompts.map((prompt) => (
+                <PromptCard key={prompt.id} prompt={prompt} />
               ))}
             </div>
-          ) : (
-            <EmptyState query={searchQuery} category={activeCategory?.label} />
-          )}
+          </div>
         </div>
       </main>
     </div>
   );
-}
+};
 
-function EmptyState({ query, category }) {
-  return (
-    <div className="flex flex-col items-center justify-center h-full pb-16 gap-4 text-center">
-      <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center pp-empty-pulse">
-        <Search size={22} className="text-slate-600" />
-      </div>
-      <div>
-        <p className="text-slate-300 font-semibold text-[15px]">No prompts found</p>
-        <p className="text-slate-500 text-sm mt-1">
-          {query
-            ? `No results for "${query}" in ${category}`
-            : `No prompts available in ${category}`}
-        </p>
-      </div>
-      <button
-        onClick={() => {}}
-        className="mt-2 text-cyan-400 text-sm font-medium hover:underline"
-      >
-        Clear search
-      </button>
-    </div>
-  );
-}
+export default Dashboard;

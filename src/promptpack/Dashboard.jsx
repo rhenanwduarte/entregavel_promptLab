@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { categories, prompts } from './data';
+import { PROMPTS_DATA } from '../data/prompts';
 import Sidebar from './Sidebar';
 import PromptCard from './PromptCard';
 import { Search, Terminal, Cpu } from 'lucide-react';
 
 const Dashboard = () => {
-  const [activeCategory, setActiveCategory] = useState('cosmetics');
+  const [activeCategory, setActiveCategory] = useState('cos');
   const [searchTerm, setSearchTerm] = useState('');
+  // 🔥 GERADOR DINÂMICO A PARTIR DO PROMPTS_DATA
+  const categories = PROMPTS_DATA.map(category => ({
+    id: category.category_id,
+    label: category.category_name,
+    icon: "Box" // default icon
+  }));
+  const prompts = PROMPTS_DATA.flatMap(category =>
+    category.prompts.map(prompt => ({
+      ...prompt,
+      categoryId: category.category_id
+    }))
+  );
 
   const filteredPrompts = prompts.filter(p =>
     p.categoryId === activeCategory &&

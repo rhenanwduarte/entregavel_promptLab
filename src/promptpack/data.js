@@ -2,6 +2,7 @@
 // PROMPTLAB V3 PRO - MASTER DATABASE (100 PROMPTS)
 // ==========================================
 
+
 export const categories = [
   { id: 'cosmetics', label: 'Cosmetics', icon: 'Sparkles' },
   { id: 'supplements', label: 'Supplements', icon: 'Zap' },
@@ -14,7 +15,6 @@ export const categories = [
   { id: 'tech-gadgets', label: 'Tech Gadgets', icon: 'Cpu' },
   { id: 'pets', label: 'Pet Products', icon: 'Heart' }
 ];
-
 export const prompts = [
   // ==========================================
   // LOTE 1: COSMETICS & SKINCARE
@@ -98,6 +98,39 @@ export const prompts = [
     image: 'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?q=80&w=800',
     gradient: 'from-yellow-600 to-orange-700',
     prompt: 'A beautifully styled, high-end rustic-elegant product photograph of a blank [YOUR PRODUCT HERE: e.g., amber glass jar filled with organic body scrub]. The product sits on a piece of raw, weathered linen fabric, surrounded by artfully scattered raw ingredients like [RAW INGREDIENTS: e.g., coarse brown sugar, coffee beans, and a single cinnamon stick]. Captured with a Canon EOS 5D Mark IV using a 85mm f/1.2L II USM lens, set to a shallow f/2.0 aperture to isolate the product while creating a warm, dreamy blur in the textured foreground and background. The lighting is soft, warm, and natural, mimicking window light from a rustic kitchen. Premium organic vibe, cozy textures, 8k.'
+  },
+
+  {
+    id: 'cos-11',
+    categoryId: 'cosmetics',
+    title: 'Crystal Drop Studio',
+    image: 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?q=80&w=800',
+    gradient: 'from-blue-400 to-cyan-500',
+    prompt: 'Create an ultra-high-resolution commercial studio photograph of a [YOUR PRODUCT HERE]. The product is a physical cosmetic container placed on a dark polished stone surface with controlled water droplets surrounding the base. Background features a smooth aquatic blue gradient with soft atmospheric diffusion. Lighting engineering: Large diffused softbox from top front at 45 degrees. Subtle rim light from rear left to accent glass edges. Controlled specular highlights. No harsh reflections. Camera: 85mm prime lens. Shallow depth of field. Eye-level perspective. True-to-scale proportions. Material control: Accurate glass refraction. Realistic liquid transparency. Sharp label edges. No distortion. Composition: Centered framing. Minimal negative space. Balanced symmetry. Color science: Cool neutral tones. Soft cyan highlights. Natural skin-safe color grading. Realism enforcement: Correct shadow physics. Natural light falloff. Accurate surface reflection. Negative stability block: Avoid warped packaging, melted plastic, floating objects, unrealistic water behavior, distorted typography. Best Used For: Serums, toners, moisturizers, perfumes. Lighting Profile: Diffused aquatic glow. Camera Profile: 85mm shallow DOF. Material Priority: Glass, liquid, gloss.'
+  },
+  {
+    id: 'cos-12',
+    categoryId: 'cosmetics',
+    title: 'Velvet Matte Authority',
+    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800',
+    gradient: 'from-gray-800 to-zinc-900',
+    prompt: 'Create a high-end commercial product photograph of a [YOUR PRODUCT HERE]. The product is placed on a matte black textured surface inside a controlled dark studio environment. Background remains deep charcoal with subtle gradient separation. Lighting engineering: Low-key lighting setup. Single key light from front right. Soft rim light to define silhouette. High contrast without clipping highlights. Camera: 105mm portrait lens. Shallow depth of field. Slight low-angle framing for authority. Material control: Matte finish clarity. Accurate metallic details. Precise logo rendering. No over-sharpening. Composition: Rule-of-thirds placement. Negative space on left side. Clean luxury framing. Color science: Muted tones. Warm skin-safe highlights. Deep controlled blacks. Realism enforcement: Natural shadows. No artificial glow. Correct edge geometry. Negative stability block: Avoid glossy artifacts, warped labels, floating shadows, surreal reflections. Best Used For: Lipsticks, foundations, premium makeup. Lighting Profile: Low-key editorial. Camera Profile: 105mm portrait. Material Priority: Matte plastic, metal accents.'
+  },
+  {
+    id: 'cos-13',
+    categoryId: 'cosmetics',
+    title: 'Marble Clinical Podium',
+    image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=800',
+    gradient: 'from-stone-200 to-gray-100',
+    prompt: 'Create an ultra-clean commercial studio photograph of a [YOUR PRODUCT HERE]. The product is positioned on a white marble podium inside a clinical minimalist environment. Soft white seamless background with subtle shadow gradient. Lighting engineering: Full diffused front lighting. Top softbox. Gentle fill from both sides. No hard shadows. Camera: 70mm lens. Straight-on eye-level framing. Sharp focus across entire product. Material control: Accurate marble texture. True label sharpness. Balanced highlight control. Composition: Centered symmetry. Clean negative space. Minimalist aesthetic. Color science: Bright neutral palette. Soft warm highlights. Controlled white balance. Realism enforcement: Accurate scale. Natural contact shadows. No floating appearance. Negative stability block: Avoid overexposed whites, plastic distortion, floating effect. Best Used For: Clinical skincare, dermatology products. Lighting Profile: High-key diffused. Camera Profile: 70mm commercial. Material Priority: Marble, glass, soft plastic.'
+  },
+  {
+    id: 'cos-14',
+    categoryId: 'cosmetics',
+    title: 'Botanical Light Sanctuary',
+    image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=800',
+    gradient: 'from-green-400 to-emerald-500',
+    prompt: 'Create a natural light commercial product photograph of a [YOUR PRODUCT HERE]. The product is placed on a warm wooden surface surrounded by soft green botanical leaves. Sunlight filters from left side creating gentle natural highlights. Lighting engineering: Simulated golden hour sunlight. Soft shadows. Natural ambient bounce. Camera: 85mm lens. Shallow depth. Slight top-down angle. Material control: Organic texture fidelity. Natural label detail. True-to-life surface gloss. Composition: Balanced asymmetry. Foreground leaf blur. Soft depth layering. Color science: Warm earthy tones. Soft green accents. Natural color grading. Realism enforcement: Correct light direction. Natural leaf shadows. Real surface contact. Negative stability block: Avoid plastic-looking leaves, exaggerated sunlight, floating product. Best Used For: Organic skincare, clean beauty brands. Lighting Profile: Golden hour natural. Camera Profile: 85mm lifestyle. Material Priority: Wood, leaves, natural textures.'
   },
 
   // ==========================================
@@ -307,7 +340,6 @@ export const prompts = [
     id: 'auto-35',
     categoryId: 'automotive',
     title: 'Brake Caliper',
-    // Imagem inédita: Jeep Off-Road em trilha, mantendo a pegada lifestyle do seu dashboard
     image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=800&auto=format&fit=crop',
     gradient: 'from-red-500 to-pink-500',
     prompt: 'A detailed macro-photographic close-up of a massive, [YOUR PRODUCT HERE: e.g., bright red Brembo six-piston high-performance brake caliper with drilled carbon-ceramic rotor]. Captured with a Nikon D850 and a 105mm f/2.8 lens. The lighting is exceptionally dramatic, using cool, blue-toned LED panels to create a tech-inspired background, while a sharp, neutral white spotlight perfectly illuminates the vibrant paint and metallic texture of the caliper. High-speed racing aesthetic, pristine studio isolation, 8k resolution, photorealistic.'
@@ -459,7 +491,7 @@ export const prompts = [
     id: 'jewel-53',
     categoryId: 'jewelry',
     title: 'Pearls on White Silk',
-    image: 'https://images.unsplash.com/photo-1599643478514-4a11011c77f0?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800',
     gradient: 'from-rose-100 to-teal-50',
     prompt: 'A soft, ethereal, and beautifully styled product visualization of a [YOUR PRODUCT HERE: e.g., delicate strand of luminous South Sea pearls featuring a minimalist diamond clasp]. The jewelry cascades gracefully across a landscape of rippling, pure white silk fabric. Captured with a Canon EOS R5 and an RF 100mm f/2.8L Macro IS USM. The lighting is incredibly soft and diffused, simulating gentle morning window light through sheer curtains. This eliminates harsh shadows and enhances the creamy, iridescent luster of the pearls. High-fashion bridal jewelry aesthetic, dreamy, 8k.'
   },
@@ -491,7 +523,7 @@ export const prompts = [
     id: 'jewel-57',
     categoryId: 'jewelry',
     title: 'Extreme Gem Facet',
-    image: 'https://images.unsplash.com/photo-1588828906352-78dcda6fb308?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1601119479271-21ca92049c81?q=80&w=800',
     gradient: 'from-blue-500 to-cyan-400',
     prompt: 'An extreme, ultra-macro conceptual shot focusing entirely on the highly polished surface and sharp facets of a [YOUR PRODUCT HERE: e.g., massive princess-cut sapphire gemstone set in white gold]. The perspective is so close it borders on abstract art. Shot with a Nikon D850 and a specialized 105mm macro lens coupled with extension tubes. The lighting is an immaculate, shadowless studio setup utilizing a tethered macro ring light to illuminate the complex, microscopic geometry and the intense inner color of the gemstone. Scientific precision, pure luxury, flawlessly sharp, 8k.'
   },
@@ -499,7 +531,7 @@ export const prompts = [
     id: 'jewel-58',
     categoryId: 'jewelry',
     title: 'Dive Watch',
-    image: 'https://images.unsplash.com/photo-1548690494-1a3b8d002f23?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?q=80&w=800',
     gradient: 'from-cyan-600 to-blue-500',
     prompt: 'A dynamic, rugged lifestyle product shot of a [YOUR PRODUCT HERE: e.g., heavy-duty stainless steel dive watch with a luminescent blue dial] fully submerged in crystal-clear water. Tiny, perfect oxygen bubbles cling to the metal casing and the sapphire glass. Captured with a Phase One XF IQ4 150MP and a waterproof macro housing. The lighting is intense and cool-toned, mimicking strong sunlight piercing through the water\'s surface, creating caustic light patterns across the watch face and highlighting its extreme durability and aquatic performance. Deep sea exploration aesthetic, 8k.'
   },

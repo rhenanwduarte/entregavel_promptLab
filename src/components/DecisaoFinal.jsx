@@ -37,7 +37,10 @@ export default function DecisaoFinal() {
                 </h2>
 
                 {/* ÚLTIMO CTA (Segundo botão da página) */}
-                <button className="decisao-reveal group relative overflow-hidden bg-transparent border border-accent text-accent px-12 py-6 font-body font-medium tracking-widest uppercase text-sm md:text-base transition-all duration-700 ease-cinematic hover:bg-accent hover:border-accent hover:text-background w-full md:w-auto shadow-[0_0_30px_rgba(214,167,86,0.05)] hover:shadow-[0_0_60px_rgba(214,167,86,0.2)]">
+                <button 
+                    onClick={handleCheckout}
+                    className="decisao-reveal group relative overflow-hidden bg-transparent border border-accent text-accent px-12 py-6 font-body font-medium tracking-widest uppercase text-sm md:text-base transition-all duration-700 ease-cinematic hover:bg-accent hover:border-accent hover:text-background w-full md:w-auto shadow-[0_0_30px_rgba(214,167,86,0.05)] hover:shadow-[0_0_60px_rgba(214,167,86,0.2)]"
+                >
                     <span className="relative z-10">→ Iniciar minha Travessia</span>
                     <div className="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-700 ease-cinematic" />
                 </button>

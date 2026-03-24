@@ -76,7 +76,10 @@ export default function OfferSection() {
                 </div>
 
                 {/* Botão Premium com Easing Cinematic */}
-                <button className="group relative overflow-hidden bg-[#1D262B] border border-accent/30 text-accent hover:text-background font-body font-normal tracking-widest uppercase text-sm px-12 py-6 transition-colors duration-[0.8s] ease-cinematic w-full max-w-sm">
+                <button
+                    onClick={handleCheckout}
+                    className="group relative overflow-hidden bg-[#1D262B] border border-accent/30 text-accent hover:text-background font-body font-normal tracking-widest uppercase text-sm px-12 py-6 transition-colors duration-[0.8s] ease-cinematic w-full max-w-sm"
+                >
                     <span className="relative z-10 transition-colors duration-[0.8s] ease-cinematic group-hover:text-background">Iniciar minha Travessia</span>
                     {/* Micro Interação Gold Sweep */}
                     <div className="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[0.8s] ease-cinematic" />

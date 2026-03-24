@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { Play } from 'lucide-react';
+import { handleCheckout } from '../lib/checkout';
 
 export default function HeroSection() {
     const heroRef = useRef(null);
@@ -34,7 +35,10 @@ export default function HeroSection() {
                     Um ato por dia. Um áudio imersivo por etapa. Olho no olho. Chegou a hora de sentir o que as palavras não dizem.
                 </p>
 
-                <button className="hero-anim group relative px-8 py-4 rounded-full bg-accent text-background font-heading font-semibold text-lg overflow-hidden transition-transform hover:scale-105 active:scale-95 flex items-center gap-3">
+                <button 
+                    onClick={handleCheckout}
+                    className="hero-anim group relative px-8 py-4 rounded-full bg-accent text-background font-heading font-semibold text-lg overflow-hidden transition-transform hover:scale-105 active:scale-95 flex items-center gap-3"
+                >
                     <span className="relative z-10 flex items-center gap-2">
                         <Play fill="currentColor" size={20} /> Iniciar Travessia
                     </span>

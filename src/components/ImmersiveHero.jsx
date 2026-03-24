@@ -60,7 +60,10 @@ export default function ImmersiveHero() {
                 </p>
 
                 {/* CTA Sólido Emocional */}
-                <button className="hero-reveal group relative overflow-hidden bg-accent text-[#0B0F12] px-10 py-5 font-body font-medium tracking-widest uppercase text-sm md:text-base border border-accent transition-all duration-700 ease-cinematic hover:bg-transparent hover:text-accent w-full md:w-auto">
+                <button 
+                    onClick={handleCheckout}
+                    className="hero-reveal group relative overflow-hidden bg-accent text-[#0B0F12] px-10 py-5 font-body font-medium tracking-widest uppercase text-sm md:text-base border border-accent transition-all duration-700 ease-cinematic hover:bg-transparent hover:text-accent w-full md:w-auto"
+                >
                     <span className="relative z-10">→ Iniciar minha Travessia</span>
                     <div className="absolute inset-0 bg-[#0B0F12] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-700 ease-cinematic" />
                 </button>

@@ -62,7 +62,10 @@ export default function SalesHero() {
         </p>
 
         {/* CTA com glow suave */}
-        <button className="hero-cinematic group relative overflow-hidden bg-transparent border border-accent/40 text-accent px-10 py-5 font-body font-normal tracking-widest uppercase text-sm md:text-base transition-all duration-700 ease-cinematic hover:bg-accent hover:text-background hover:border-accent hover:shadow-[0_0_40px_rgba(198,167,94,0.3)] w-full md:w-auto">
+        <button
+          onClick={handleCheckout}
+          className="hero-cinematic group relative overflow-hidden bg-transparent border border-accent/40 text-accent px-10 py-5 font-body font-normal tracking-widest uppercase text-sm md:text-base transition-all duration-700 ease-cinematic hover:bg-accent hover:text-background hover:border-accent hover:shadow-[0_0_40px_rgba(198,167,94,0.3)] w-full md:w-auto"
+        >
           <span className="relative z-10">Iniciar Minha Travessia</span>
           <div className="absolute inset-0 bg-accent/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-cinematic" />
         </button>

@@ -46,6 +46,7 @@ export default function Navbar() {
 
                 {/* Botão CTA Magnético */}
                 <button
+                    onClick={handleCheckout}
                     className="group relative overflow-hidden bg-accent text-primary px-5 py-2.5 md:px-6 md:py-3 rounded-[2rem] font-heading font-semibold text-sm transition-transform hover:scale-[1.03] duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] shadow-[0_0_20px_rgba(201,168,76,0.2)]"
                 >
                     <span className="relative z-10 transition-colors group-hover:text-primary">Iniciar</span>

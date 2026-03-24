@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { handleCheckout } from '../lib/checkout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,7 +58,10 @@ export default function CallToAction() {
                 </div>
 
                 {/* Botão Dominante (Agressivo / JavaScript look) */}
-                <button className="cta-anim mt-10 w-full group relative overflow-hidden bg-technicalWhite text-obsidian px-10 py-6 rounded-xl font-heading font-extrabold text-xl uppercase tracking-widest transition-transform hover:scale-[1.02] duration-300 flex items-center justify-center shadow-[0_0_30px_rgba(232,237,245,0.15)]">
+                <button 
+                    onClick={handleCheckout}
+                    className="cta-anim mt-10 w-full group relative overflow-hidden bg-technicalWhite text-obsidian px-10 py-6 rounded-xl font-heading font-extrabold text-xl uppercase tracking-widest transition-transform hover:scale-[1.02] duration-300 flex items-center justify-center shadow-[0_0_30px_rgba(232,237,245,0.15)]"
+                >
                     <span className="relative z-10">GARANTIR MEU ACESSO</span>
                     <span className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" />
                 </button>

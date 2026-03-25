@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { Check, AlertCircle, Loader2 } from "lucide-react";
 
 export default function Success() {
-  const [message, setMessage] = useState("Processando sua compra...");
+  const [status, setStatus] = useState("loading"); // loading, success, error
+  const [userEmail, setUserEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("Processando sua compra...");
 
   useEffect(() => {
     const sendAccess = async () => {
@@ -9,8 +12,13 @@ export default function Success() {
         const params = new URLSearchParams(window.location.search);
         const email = params.get("email");
 
+        if (email) {
+          setUserEmail(email);
+        }
+
         if (!email) {
-          setMessage("Erro ao processar sua compra");
+          setStatus("error");
+          setErrorMessage("Erro ao processar sua compra");
           return;
         }
 
@@ -28,14 +36,16 @@ export default function Success() {
         if (!response.ok) {
           const text = await response.text();
           console.error("API ERROR:", text);
-          setMessage("Erro ao enviar acesso");
+          setStatus("error");
+          setErrorMessage("Erro ao enviar acesso");
           return;
         }
 
-        setMessage("Seu acesso foi enviado para seu email");
+        setStatus("success");
       } catch (error) {
         console.error("FETCH ERROR:", error);
-        setMessage("Erro ao conectar com o servidor");
+        setStatus("error");
+        setErrorMessage("Erro ao conectar com o servidor");
       }
     };
 
@@ -43,20 +53,93 @@ export default function Success() {
   }, []);
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "#0b0f1a",
-        color: "white",
-        fontSize: "20px",
-        textAlign: "center",
-        padding: "20px",
-      }}
-    >
-      {message}
+    <div className="min-h-screen relative flex items-center justify-center bg-[#0b0f1a] text-white p-4 font-sans overflow-hidden">
+      {/* Background Glows for Premium Tech Feel */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/4 -translate-y-2/3 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Embedded Animation Styles */}
+      <style>{`
+        @keyframes fade-scale-in {
+          0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-premium-in {
+          animation: fade-scale-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
+
+      {/* Main Container Card */}
+      <div className="relative w-full max-w-md bg-[#121826]/70 backdrop-blur-2xl border border-white/5 shadow-2xl rounded-3xl p-8 sm:p-12 text-center animate-premium-in overflow-hidden">
+        {/* Subtle top glare effect */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        
+        {status === "loading" && (
+          <div className="flex flex-col items-center justify-center py-4">
+            <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-6" />
+            <h2 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight">
+              Processando sua compra...
+            </h2>
+            <p className="text-[#8c94a3] text-sm sm:text-base">
+              Por favor, aguarde um momento.
+            </p>
+          </div>
+        )}
+
+        {status === "success" && (
+          <div className="flex flex-col items-center justify-center">
+            {/* Green Modern Check Icon */}
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-green-500/20 blur-xl rounded-full" />
+              <div className="relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-full shadow-lg shadow-green-500/20 ring-4 ring-green-500/10">
+                <Check className="w-7 h-7 text-white stroke-[3]" />
+              </div>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
+              Access Delivered <br className="hidden sm:block" /> Successfully
+            </h1>
+
+            <p className="text-[#a0a5b1] text-base sm:text-lg mb-6 leading-relaxed">
+              Your access link has been sent to your email.
+            </p>
+
+            {userEmail && (
+              <div className="inline-flex items-center justify-center bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-inner">
+                <span className="text-[#717888] text-sm mr-2">Sent to:</span>
+                <span className="font-medium text-white text-sm tracking-wide">
+                  {userEmail}
+                </span>
+              </div>
+            )}
+
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4" />
+
+            <p className="text-sm text-[#717888] mt-2 font-medium tracking-wide">
+              Please check your inbox (and spam folder if needed).
+            </p>
+          </div>
+        )}
+
+        {status === "error" && (
+          <div className="flex flex-col items-center justify-center py-4">
+            {/* Red Error Icon */}
+            <div className="relative mb-6">
+              <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full" />
+              <div className="relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-red-500 to-rose-400 rounded-full shadow-lg shadow-red-500/20 ring-4 ring-red-500/10">
+                <AlertCircle className="w-7 h-7 text-white" />
+              </div>
+            </div>
+
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 tracking-tight">
+              {errorMessage}
+            </h2>
+            <p className="text-[#8c94a3] text-sm sm:text-base leading-relaxed">
+              Não foi possível enviar o seu acesso. Por favor, tente novamente ou entre em contato com o suporte.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

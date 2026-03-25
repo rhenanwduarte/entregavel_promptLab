@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Access from "./pages/Access";
+import Success from "./pages/Success";
 import Dashboard from "./promptpack/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -17,6 +18,7 @@ function App() {
           Handles identification and session unlocking.
       */}
       <Route path="/" element={<Access />} />
+      <Route path="/success" element={<Success />} />
 
       {/* 
           2. Protected Deliverable

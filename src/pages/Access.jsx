@@ -69,6 +69,8 @@ export default function Access() {
   const [ready, setReady] = useState(false);
   const [ident, setIdent] = useState("");
   const [hasAccess, setHasAccess] = useState(() => localStorage.getItem("hasAccess") === "true");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // 1. Trigger entrance animation
@@ -83,14 +85,38 @@ export default function Access() {
   }, [navigate]);
 
   // Primary Access Grant Handler
-  const handleUnlock = (e) => {
+  const handleUnlock = async (e) => {
     e?.preventDefault();
-    if (ident.trim()) {
-      // Grant access based on identification being non-empty
-      localStorage.setItem("hasAccess", "true");
-      setHasAccess(true);
-      // Brief delay for feedback/transition
-      setTimeout(() => navigate("/app"), 600);
+    if (!ident.trim() || loading) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/validate-access", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: ident }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Grant access based on identification being non-empty
+        localStorage.setItem("hasAccess", "true");
+        setHasAccess(true);
+        // Brief delay for feedback/transition
+        setTimeout(() => navigate("/app"), 600);
+      } else {
+        setError("Access not found. Please use the email you received.");
+      }
+    } catch (err) {
+      console.error("Validation error:", err);
+      setError("Error connecting to server. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,13 +131,15 @@ export default function Access() {
         .access-root { font-family: 'Inter', sans-serif; height: 100vh; width: 100%; overflow: hidden; position: relative; background: #080b14; display: flex; align-items: center; justify-content: center; }
         .access-root::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
         
-        .access-input { width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #fff; font-size: 15px; outline: none; transition: all 0.3s ease; font-family: 'Inter', sans-serif; margin-bottom: 20px; }
+        .access-input { width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #fff; font-size: 15px; outline: none; transition: all 0.3s ease; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
         .access-input:focus { border-color: rgba(99,102,241,0.5); background: rgba(255,255,255,0.05); box-shadow: 0 0 20px rgba(99,102,241,0.1); }
         .access-input::placeholder { color: rgba(255,255,255,0.2); }
 
         .cta-btn { position: relative; overflow: hidden; padding: 16px 40px; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: linear-gradient(135deg, #4f46e5, #6366f1); border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); width: 100%; }
-        .cta-btn:hover { box-shadow: 0 0 40px rgba(99,102,241,0.6), 0 8px 30px rgba(0,0,0,0.5); transform: translateY(-3px); }
+        .cta-btn:hover:not(:disabled) { box-shadow: 0 0 40px rgba(99,102,241,0.6), 0 8px 30px rgba(0,0,0,0.5); transform: translateY(-3px); }
+        .cta-btn:disabled { opacity: 0.7; cursor: not-allowed; filter: grayscale(0.5); }
         .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: rgba(165,180,252,0.9); letter-spacing: 0.06em; }
+        .error-msg { font-size: 12px; color: #ef4444; margin-bottom: 20px; text-align: left; padding-left: 4px; animation: fadeUp 0.3s ease forwards; }
       `}</style>
 
       <div className="access-root">
@@ -151,10 +179,13 @@ export default function Access() {
               placeholder="Email or Access Code"
               value={ident}
               onChange={(e) => setIdent(e.target.value)}
+              disabled={loading}
               required 
             />
-            <button type="submit" className="cta-btn">
-              Unlock Access →
+            {error && <div className="error-msg">{error}</div>}
+            
+            <button type="submit" className="cta-btn" disabled={loading}>
+              {loading ? "Validating..." : "Unlock Access →"}
             </button>
           </form>
 

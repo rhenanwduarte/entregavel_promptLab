@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Check, AlertCircle, Loader2 } from "lucide-react";
+import { Check, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Success() {
   const [status, setStatus] = useState("loading"); // loading, success, error
   const [userEmail, setUserEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("Processando sua compra...");
+  const [errorMessage, setErrorMessage] = useState("Processing your purchase...");
 
   useEffect(() => {
     const sendAccess = async () => {
@@ -18,7 +19,7 @@ export default function Success() {
 
         if (!email) {
           setStatus("error");
-          setErrorMessage("Erro ao processar sua compra");
+          setErrorMessage("Error processing your purchase");
           return;
         }
 
@@ -37,7 +38,7 @@ export default function Success() {
           const text = await response.text();
           console.error("API ERROR:", text);
           setStatus("error");
-          setErrorMessage("Erro ao enviar acesso");
+          setErrorMessage("It was not possible to deliver your access");
           return;
         }
 
@@ -45,7 +46,7 @@ export default function Success() {
       } catch (error) {
         console.error("FETCH ERROR:", error);
         setStatus("error");
-        setErrorMessage("Erro ao conectar com o servidor");
+        setErrorMessage("Error connecting to server");
       }
     };
 
@@ -78,10 +79,10 @@ export default function Success() {
           <div className="flex flex-col items-center justify-center py-4">
             <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-6" />
             <h2 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight">
-              Processando sua compra...
+              Processing your purchase...
             </h2>
-            <p className="text-[#8c94a3] text-sm sm:text-base">
-              Por favor, aguarde um momento.
+            <p className="text-[#8c94a3]/60 text-sm sm:text-base">
+              Please wait a moment while we set things up.
             </p>
           </div>
         )}
@@ -97,16 +98,16 @@ export default function Success() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
-              Access Delivered <br className="hidden sm:block" /> Successfully
+              Access Delivered Successfully
             </h1>
 
-            <p className="text-[#a0a5b1] text-base sm:text-lg mb-6 leading-relaxed">
-              Your access link has been sent to your email.
+            <p className="text-[#a0a5b1]/80 text-base sm:text-lg mb-6 leading-relaxed">
+              Your private access has been successfully delivered to your email.
             </p>
 
             {userEmail && (
               <div className="inline-flex items-center justify-center bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-inner">
-                <span className="text-[#717888] text-sm mr-2">Sent to:</span>
+                <span className="text-[#717888]/60 text-sm mr-2">Sent to:</span>
                 <span className="font-medium text-white text-sm tracking-wide">
                   {userEmail}
                 </span>
@@ -115,9 +116,21 @@ export default function Success() {
 
             <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4" />
 
-            <p className="text-sm text-[#717888] mt-2 font-medium tracking-wide">
+            <p className="text-sm text-[#717888]/40 mb-1 font-medium tracking-wide">
               Please check your inbox (and spam folder if needed).
             </p>
+            <p className="text-xs text-[#717888]/30 italic mb-8">
+              This link may expire for security reasons.
+            </p>
+
+            {/* CTA Button */}
+            <Link 
+              to="/access"
+              className="group relative flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg shadow-blue-600/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Open PromptLab
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         )}
 
@@ -134,12 +147,20 @@ export default function Success() {
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 tracking-tight">
               {errorMessage}
             </h2>
-            <p className="text-[#8c94a3] text-sm sm:text-base leading-relaxed">
-              Não foi possível enviar o seu acesso. Por favor, tente novamente ou entre em contato com o suporte.
+            <p className="text-[#8c94a3]/60 text-sm sm:text-base leading-relaxed">
+              It was not possible to deliver your access. Please try again or contact support.
             </p>
+            
+            <Link 
+              to="/access"
+              className="mt-8 text-sm text-[#717888] hover:text-white transition-colors flex items-center"
+            >
+              Return to login
+            </Link>
           </div>
         )}
       </div>
     </div>
   );
 }
+```

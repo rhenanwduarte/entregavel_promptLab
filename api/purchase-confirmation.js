@@ -25,9 +25,10 @@ export default async function handler(req, res) {
         html: `
           <h1>Acesso liberado</h1>
           <p>Seu código de acesso: <strong>PLAB-PRO-6T9X2Q</strong></p>
-          <p>Acesse agora: 
-            <a href="https://entregavel-prompt-lab.vercel.app/access">
-              https://entregavel-prompt-lab.vercel.app/access
+          <p>Acesse agora:</p>
+          <p>
+            <a href="https://app.promptlabpack.pro/access">
+              https://app.promptlabpack.pro/access
             </a>
           </p>
         `,

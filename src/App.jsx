@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 import Access from "./pages/Access";
 import Success from "./pages/Success";
 import Dashboard from "./promptpack/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { testSupabaseConnection } from "./lib/supabaseTest";
 
 /**
  * PromptLab — Main View Controller
@@ -11,6 +13,18 @@ import ProtectedRoute from "./components/ProtectedRoute";
  * Note: /app is the protected deliverable dashboard.
  */
 function App() {
+  useEffect(() => {
+    const checkConnection = async () => {
+      const result = await testSupabaseConnection();
+      if (result.success) {
+        console.log("✅ Supabase connected");
+      } else {
+        console.error("❌ Supabase error:", result.error);
+      }
+    };
+    checkConnection();
+  }, []);
+
   return (
     <Routes>
       {/* 

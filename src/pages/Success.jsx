@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Check, AlertCircle, Loader2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { saveUserToSupabase } from "../lib/saveUser";
 
 export default function Success() {
   const [status, setStatus] = useState("loading"); // loading, success, error
@@ -15,6 +16,16 @@ export default function Success() {
 
         if (email) {
           setUserEmail(email);
+          
+          // Persistence Trigger with Session Guard
+          const hasSaved = sessionStorage.getItem("user_saved");
+          if (!hasSaved) {
+            saveUserToSupabase(email).then((res) => {
+              if (res.success) {
+                sessionStorage.setItem("user_saved", "true");
+              }
+            });
+          }
         }
 
         if (!email) {

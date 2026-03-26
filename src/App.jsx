@@ -12,24 +12,35 @@ import { supabase } from "./lib/supabase";
  */
 function App() {
   useEffect(() => {
+    console.log("🚀 APP RODANDO");
+
     const runTest = async () => {
-      // ✅ TESTE 1 — conexão
-      const result = await testSupabaseConnection();
+      try {
+        // ✅ TESTE 1 — conexão
+        const result = await testSupabaseConnection();
 
-      if (result.success) {
-        console.log("✅ Supabase connected");
-      } else {
-        console.error("❌ Supabase error:", result.error);
+        if (result.success) {
+          console.log("✅ Supabase connected");
+        } else {
+          console.error("❌ Supabase error:", result.error);
+        }
+
+        // 🔥 TESTE 2 — INSERT REAL
+        const { data, error } = await supabase.from("users").insert([
+          {
+            email: "teste@promptlab.com",
+          },
+        ]);
+
+        if (error) {
+          console.error("❌ INSERT ERROR:", error);
+        } else {
+          console.log("✅ INSERT SUCCESS:", data);
+        }
+
+      } catch (err) {
+        console.error("🔥 ERRO GERAL:", err);
       }
-
-      // 🔥 TESTE 2 — INSERT REAL
-      const { data, error } = await supabase.from("users").insert([
-        {
-          email: "teste@promptlab.com",
-        },
-      ]);
-
-      console.log("INSERT RESULT:", data, error);
     };
 
     runTest();

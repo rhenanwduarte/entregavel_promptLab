@@ -19,31 +19,24 @@ function App() {
     localStorage.removeItem("promptlab_email");
     localStorage.removeItem("hasAccess");
 
-    // 1. Get strictly verified user (cryptographically validates JWT against Server)
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        // If JWT is verified fresh, hydrate the local session state
-        supabase.auth.getSession().then(({ data: { session } }) => {
-          setSession(session);
-          setIsInitializing(false);
-        });
-      } else {
-        // Boot out any spoofed local tokens
-        setSession(null);
-        setIsInitializing(false);
-      }
+    // 1. Let Supabase natively parse URL hash and establish session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsInitializing(false);
     });
 
-    // 2. Listen for auth changes globally
+    // 2. Listen for subsequent auth state changes (e.g. Magic Link hydration)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      setIsInitializing(false); // Safeguard
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  // 3. Routing awaits hydration to prevent infinite login loops
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center">

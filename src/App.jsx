@@ -19,13 +19,24 @@ function App() {
     localStorage.removeItem("promptlab_email");
     localStorage.removeItem("hasAccess");
 
-    // 1. Let Supabase natively parse URL hash and establish session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    async function initAuth() {
+      try {
+        // 1. Complete PKCE flow if returning from Magic Link (code in URL)
+        await supabase.auth.exchangeCodeForSession(window.location.href);
+      } catch (err) {
+        // Safe no-op: if no code is present, Supabase throws — we ignore it
+        console.warn("PKCE exchange skipped or failed:", err.message);
+      }
+
+      // 2. Resolve final session state after potential code exchange
+      const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setIsInitializing(false);
-    });
+    }
 
-    // 2. Listen for subsequent auth state changes (e.g. Magic Link hydration)
+    initAuth();
+
+    // 3. Listen for subsequent auth state changes (e.g. tab refocus, sign out)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

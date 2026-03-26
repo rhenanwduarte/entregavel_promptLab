@@ -4,7 +4,6 @@ import Access from "./pages/Access";
 import Success from "./pages/Success";
 import Dashboard from "./promptpack/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { testSupabaseConnection } from "./lib/supabaseTest";
 import { supabase } from "./lib/supabase";
 
 /**
@@ -12,38 +11,41 @@ import { supabase } from "./lib/supabase";
  */
 function App() {
   useEffect(() => {
-    console.log("🚀 APP RODANDO");
+    // ─── PHASE 2: Deployment marker ───────────────────────────────────
+    console.log("PROMPTLAB_PROD_BUILD_MARKER_V1");
 
-    const runTest = async () => {
+    // ─── PHASE 3: Supabase validation ─────────────────────────────────
+    const runSupabaseTest = async () => {
+      console.log("SUPABASE_TEST_START");
+
       try {
-        // ✅ TESTE 1 — conexão
-        const result = await testSupabaseConnection();
+        // Test 1 — connectivity (lightweight query)
+        const { error: pingError } = await supabase
+          .from("users")
+          .select("count", { count: "exact", head: true });
 
-        if (result.success) {
-          console.log("✅ Supabase connected");
+        if (pingError) {
+          console.error("SUPABASE_CONNECT_ERROR:", pingError.message);
         } else {
-          console.error("❌ Supabase error:", result.error);
+          console.log("SUPABASE_CONNECTED_OK");
         }
 
-        // 🔥 TESTE 2 — INSERT REAL
-        const { data, error } = await supabase.from("users").insert([
-          {
-            email: "teste@promptlab.com",
-          },
-        ]);
+        // Test 2 — controlled insert
+        const { error: insertError } = await supabase
+          .from("users")
+          .insert([{ email: "teste@promptlab.com" }]);
 
-        if (error) {
-          console.error("❌ INSERT ERROR:", error);
+        if (insertError) {
+          console.error("SUPABASE_INSERT_ERROR:", insertError.message);
         } else {
-          console.log("✅ INSERT SUCCESS:", data);
+          console.log("SUPABASE_INSERT_OK");
         }
-
       } catch (err) {
-        console.error("🔥 ERRO GERAL:", err);
+        console.error("SUPABASE_FATAL:", err.message);
       }
     };
 
-    runTest();
+    runSupabaseTest();
   }, []);
 
   return (

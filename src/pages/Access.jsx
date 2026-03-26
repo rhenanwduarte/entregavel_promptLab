@@ -81,7 +81,7 @@ export default function Access({ session }) {
   // Proactively react to active sessions
   useEffect(() => {
     if (session) {
-      navigate("/app");
+      navigate("/app", { replace: true });
     }
   }, [session, navigate]);
 

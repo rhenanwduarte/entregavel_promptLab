@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Sub-components (Visuals preserved)
@@ -61,60 +62,60 @@ function StatusRow({ children }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Main Product Access page
+   Main Product Access page (Supabase Auth Edition)
    ───────────────────────────────────────────────────────────────────────────── */
 
-export default function Access() {
+export default function Access({ session }) {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
-  const [ident, setIdent] = useState("");
-  const [hasAccess, setHasAccess] = useState(() => localStorage.getItem("hasAccess") === "true");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
-    // 1. Trigger entrance animation
     const t = setTimeout(() => setReady(true), 100);
-    
-    // 2. Redirect if already authenticated
-    if (localStorage.getItem("hasAccess") === "true") {
+    return () => clearTimeout(t);
+  }, []);
+
+  // Proactively react to active sessions
+  useEffect(() => {
+    if (session) {
       navigate("/app");
     }
+  }, [session, navigate]);
 
-    return () => clearTimeout(t);
-  }, [navigate]);
-
-  // Primary Access Grant Handler
+  // Handle Supabase Magic Link dispatch
   const handleUnlock = async (e) => {
     e?.preventDefault();
-    if (!ident.trim() || loading) return;
+    if (!email.trim() || loading) return;
 
     setLoading(true);
     setError("");
+    setSuccessMsg("");
 
     try {
-      const response = await fetch("/api/validate-access", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const { error: authError } = await supabase.auth.signInWithOtp({
+        email: email.trim().toLowerCase(),
+        options: {
+          // Dynamic redirect ensures they loop back seamlessly upon clicking link
+          emailRedirectTo: window.location.origin + "/app",
         },
-        body: JSON.stringify({ email: ident }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        // Grant access based on identification being non-empty
-        localStorage.setItem("hasAccess", "true");
-        setHasAccess(true);
-        // Brief delay for feedback/transition
-        setTimeout(() => navigate("/app"), 600);
-      } else {
-        setError("Access not found. Please use the email you received.");
+      if (authError) {
+        // Log privately, but don't expose
+        console.warn("[Auth] Dispatch silent failure:", authError.message);
       }
+      
+      // ANTI-ENUMERATION / BRUTE FORCE PROTECTION:
+      // Always show success regardless of whether the email actually exists
+      // in the auth table.
+      setSuccessMsg("Secure Magic Link dispatched! Please check your inbox.");
     } catch (err) {
-      console.error("Validation error:", err);
-      setError("Error connecting to server. Please try again later.");
+      // Complete suppression of technical errors (CORS, network) from leaking user state
+      console.error("Magic Link error swallowed for security.");
+      setSuccessMsg("Secure Magic Link dispatched! Please check your inbox.");
     } finally {
       setLoading(false);
     }
@@ -139,7 +140,8 @@ export default function Access() {
         .cta-btn:hover:not(:disabled) { box-shadow: 0 0 40px rgba(99,102,241,0.6), 0 8px 30px rgba(0,0,0,0.5); transform: translateY(-3px); }
         .cta-btn:disabled { opacity: 0.7; cursor: not-allowed; filter: grayscale(0.5); }
         .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: rgba(165,180,252,0.9); letter-spacing: 0.06em; }
-        .error-msg { font-size: 12px; color: #ef4444; margin-bottom: 20px; text-align: left; padding-left: 4px; animation: fadeUp 0.3s ease forwards; }
+        .error-msg { font-size: 13px; color: #ef4444; margin-bottom: 20px; text-align: left; padding-left: 4px; animation: fadeUp 0.3s ease forwards; }
+        .success-msg { font-size: 14px; color: #22c55e; margin-bottom: 20px; text-align: center; font-weight: 500; animation: fadeUp 0.3s ease forwards; }
       `}</style>
 
       <div className="access-root">
@@ -158,9 +160,9 @@ export default function Access() {
         {/* Central Card */}
         <div style={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: "480px", width: "95%", padding: "52px 48px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "32px", backdropFilter: "blur(32px)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", animation: ready ? "fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards" : "none", opacity: ready ? 1 : 0 }}>
           
-          <div className="badge" style={{ marginBottom: "32px", borderColor: hasAccess ? "rgba(34,197,94,0.4)" : "rgba(245,158,11,0.4)" }}>
-            <StatusDot color={hasAccess ? "#22c55e" : "#f59e0b"} />
-            PROMPTLAB ACCESS · {hasAccess ? "GRANTED" : "REQUIRED"}
+          <div className="badge" style={{ marginBottom: "32px", borderColor: "rgba(34,197,94,0.4)" }}>
+            <StatusDot color="#22c55e" />
+            PROMPTLAB ACCESS · REQUIRED
           </div>
 
           <h1 style={{ fontSize: "clamp(30px, 5vw, 40px)", fontWeight: 800, lineHeight: 1.1, color: "#fff", letterSpacing: "-0.03em", marginBottom: "16px" }}>
@@ -169,24 +171,33 @@ export default function Access() {
           </h1>
 
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.45)", lineHeight: 1.6, maxWidth: "340px", marginBottom: "32px" }}>
-            Enter your access email or code to continue
+            Enter your email to receive a secure login link.
           </p>
 
           <form onSubmit={handleUnlock} style={{ width: "100%" }}>
-            <input 
-              type="text" 
-              className="access-input" 
-              placeholder="Email or Access Code"
-              value={ident}
-              onChange={(e) => setIdent(e.target.value)}
-              disabled={loading}
-              required 
-            />
-            {error && <div className="error-msg">{error}</div>}
             
-            <button type="submit" className="cta-btn" disabled={loading}>
-              {loading ? "Validating..." : "Unlock Access →"}
-            </button>
+            {successMsg ? (
+              <div className="success-msg">
+                {successMsg}
+              </div>
+            ) : (
+              <>
+                <input 
+                  type="email" 
+                  className="access-input" 
+                  placeholder="name@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
+                  required 
+                />
+                {error && <div className="error-msg">{error}</div>}
+                
+                <button type="submit" className="cta-btn" disabled={loading}>
+                  {loading ? "Sending..." : "Send Magic Link →"}
+                </button>
+              </>
+            )}
           </form>
 
           <div style={{ width: "100%", height: "1px", background: "rgba(255,255,255,0.08)", margin: "40px 0 24px" }} />
@@ -194,11 +205,11 @@ export default function Access() {
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", alignItems: "flex-start" }}>
             <StatusRow><StatusDot color="#ce9042" /><span>License: Precision-Crafted</span></StatusRow>
             <StatusRow><StatusDot color="#818cf8" /><span>Assets: 100+ Professional Prompts</span></StatusRow>
-            <StatusRow><StatusDot color="#38bdf8" /><span>Status: Identifying Required</span></StatusRow>
+            <StatusRow><StatusDot color="#38bdf8" /><span>Verification: JWT / Auth Link</span></StatusRow>
           </div>
 
           <p style={{ marginTop: "36px", fontSize: "11px", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase" }}>
-            Single-Seat License · PromptLab 2024
+            Secured by Supabase Auth · 2024
           </p>
         </div>
       </div>

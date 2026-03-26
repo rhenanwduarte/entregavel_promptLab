@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "./lib/supabase";
 import Access from "./pages/Access";
 import Success from "./pages/Success";
 import Dashboard from "./promptpack/Dashboard";
@@ -6,29 +8,70 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 /**
  * PromptLab — Main View Controller
- * Production-ready version (clean, no debug logs)
+ * Production-ready version with Supabase Auth (JWT/RLS)
  */
 function App() {
+  const [session, setSession] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  useEffect(() => {
+    // 0. Legacy Auth Cleanup (Purging old email-based flags)
+    localStorage.removeItem("promptlab_email");
+    localStorage.removeItem("hasAccess");
+
+    // 1. Get strictly verified user (cryptographically validates JWT against Server)
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        // If JWT is verified fresh, hydrate the local session state
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          setSession(session);
+          setIsInitializing(false);
+        });
+      } else {
+        // Boot out any spoofed local tokens
+        setSession(null);
+        setIsInitializing(false);
+      }
+    });
+
+    // 2. Listen for auth changes globally
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-t-blue-500 border-r-blue-500 border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <Routes>
-      {/* Access Gate */}
-      <Route path="/" element={<Access />} />
+      {/* Access Gate (Magic Link Request) */}
+      <Route path="/" element={<Access session={session} />} />
 
-      {/* Success Page (after purchase / unlock) */}
+      {/* Success Page (After Purchase) */}
       <Route path="/success" element={<Success />} />
 
       {/* Protected Dashboard */}
       <Route
         path="/app"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute session={session}>
             <Dashboard />
           </ProtectedRoute>
         }
       />
 
       {/* Fallback */}
-      <Route path="*" element={<Access />} />
+      <Route path="*" element={<Access session={session} />} />
     </Routes>
   );
 }

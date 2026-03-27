@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
-import { checkUserAuthorization } from "../lib/auth";
+import { checkUserAuthorization } from '../lib/supabase'
 import { Loader2 } from "lucide-react";
 
 /**
@@ -30,7 +30,7 @@ export default function ProtectedRoute({ session, children }) {
       }
 
       const email = session.user?.email;
-      
+
       // Safety catch: JWT without email payload
       if (!email) {
         if (active) {

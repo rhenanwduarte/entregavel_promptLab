@@ -8,3 +8,22 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export async function checkUserAuthorization(email) {
+  try {
+    const { data, error } = await supabase
+      .from('authorized_users')
+      .select('email')
+      .eq('email', email)
+      .maybeSingle()
+
+    if (error) {
+      console.error('Authorization check error:', error.message)
+      return false
+    }
+
+    return !!data
+  } catch (err) {
+    console.error('Unexpected auth error:', err)
+    return false
+  }
+}

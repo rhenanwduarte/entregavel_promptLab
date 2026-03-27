@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { checkUserAuthorization } from '../lib/supabaseClient'
+import { checkUserAuthorization } from '../lib/supabase'
 
 export default function Access() {
   const [email, setEmail] = useState('')

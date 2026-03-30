@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 /**
  * Success Landing Page
- * Post-checkout gateway that cleanly informs the user to check their email 
- * for the Supabase Auth Magic Link. Zero client-side DB transactions.
+ * Post-checkout gateway that cleanly informs the user to check their email
+ * for the access link or instructions. Zero client-side DB transactions.
  */
 export default function Success() {
   return (
@@ -47,10 +47,10 @@ export default function Success() {
           <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4" />
 
           <p className="text-sm text-[#717888] mb-1 font-medium tracking-wide">
-            We have sent a secure Magic Link to your email inbox.
+            We have sent your access details to your email inbox.
           </p>
           <p className="text-xs text-[#717888]/50 italic mb-8">
-            Clicking the link will automatically authenticate your session.
+            Please use your email to log in through the access page.
           </p>
 
           {/* CTA Button */}

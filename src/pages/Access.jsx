@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { checkUserAuthorization } from '../lib/supabase'
-import { Shield, Lock } from 'lucide-react'
 
 export default function Access() {
   const [email, setEmail] = useState('')
@@ -30,33 +29,47 @@ export default function Access() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#0b0f1a]">
-      {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 relative"
+      style={{
+        background: `
+          radial-gradient(circle at 30% 20%, rgba(59,130,246,0.15), transparent 40%),
+          radial-gradient(circle at 80% 80%, rgba(139,92,246,0.15), transparent 40%),
+          #0b0f1a
+        `
+      }}
+    >
+      <style>
+        {`
+          @keyframes custom-fade-in {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          .animate-custom-fade {
+            animation: custom-fade-in 0.6s ease-out forwards;
+          }
+        `}
+      </style>
 
-      {/* Card Container */}
-      <div className="relative z-10 w-full max-w-md p-8 sm:p-10 rounded-[24px] bg-[rgba(18,24,38,0.7)] backdrop-blur-xl border border-white/5 shadow-2xl mx-4">
+      <div className="w-full max-w-[420px] rounded-3xl backdrop-blur-xl bg-white/[0.02] border border-white/5 shadow-2xl p-8 sm:p-10 opacity-0 animate-custom-fade">
         <div className="flex flex-col items-center text-center space-y-6">
           
-          {/* Badge */}
-          <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-            <Shield className="w-4 h-4 text-blue-400" />
-            <span className="text-[10px] font-bold tracking-wider text-white/80 uppercase">Secure Access</span>
+          <div className="px-3 py-1 bg-white/5 rounded-full border border-white/5">
+            <span className="text-xs font-semibold tracking-widest text-white/80 uppercase">
+              Secure Access
+            </span>
           </div>
 
-          {/* Header */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               PromptLab Access Gate
             </h1>
-            <p className="text-[#8c94a3] text-sm mt-2">
-              Authorized users only. Enter your purchase email.
+            <p className="text-[#8c94a3] text-sm leading-relaxed">
+              Access your premium dashboard using your purchase email
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="w-full space-y-4 !mt-8">
+          <form onSubmit={handleSubmit} className="w-full space-y-5 pt-2">
             <div className="space-y-2 text-left">
               <input
                 type="email"
@@ -64,39 +77,29 @@ export default function Access() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300"
+                className="w-full px-4 py-3 bg-[#0f172a] border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-transparent transition-all duration-300"
               />
             </div>
 
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full relative group overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium py-3 px-4 transition-all duration-300 hover:opacity-90 disabled:opacity-50 hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:-translate-y-0.5"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:opacity-100 opacity-90 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-600/20 disabled:scale-100 disabled:opacity-50 flex items-center justify-center text-sm"
             >
-              <div className="relative z-10 flex items-center justify-center text-sm font-semibold tracking-wide">
-                {loading ? (
-                  <span className="animate-pulse">Verifying...</span>
-                ) : (
-                  <>
-                    <span>Enter System</span>
-                    <Lock className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  </>
-                )}
-              </div>
+              {loading ? "Verifying access..." : "Access Dashboard"}
             </button>
 
-            {/* Error Message */}
             {error && (
-              <div className="p-3 mt-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm animate-in fade-in slide-in-from-top-1 duration-300">
+              <div className="mt-3 text-red-400 text-sm animate-custom-fade text-left">
                 {error}
               </div>
             )}
           </form>
 
-          {/* Footer */}
-          <div className="pt-6 mt-2 border-t border-white/5 w-full flex items-center justify-center space-x-2 text-[#8c94a3] text-xs">
-            <Lock className="w-3 h-3" />
-            <span>Encrypted & Secure Verification</span>
+          <div className="pt-6 mt-4 border-t border-white/5 w-full text-center">
+            <p className="text-xs text-white/70">
+              Secure access powered by encrypted verification
+            </p>
           </div>
 
         </div>

@@ -61,7 +61,7 @@ const PromptCard = ({ prompt, theme }) => {
             {prompt.title}
           </h3>
           <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.22em] ${t.accent}`}>
-            High Fidelity Prompt
+            Prompt de Alta Fidelidade
           </span>
         </div>
       </div>
@@ -113,8 +113,8 @@ const PromptCard = ({ prompt, theme }) => {
           className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-slate-300 active:text-slate-200 transition-colors self-start py-1"
         >
           {expanded
-            ? <><ChevronUp size={11} /> Collapse</>
-            : <><ChevronDown size={11} /> Expand Prompt</>
+            ? <><ChevronUp size={11} /> Recolher</>
+            : <><ChevronDown size={11} /> Ver Prompt Completo</>
           }
         </button>
 
@@ -133,8 +133,8 @@ const PromptCard = ({ prompt, theme }) => {
           `}
         >
           {copied
-            ? <><Check size={13} strokeWidth={3} /> Copied</>
-            : <><Copy size={13} /> Copy Master Prompt</>
+            ? <><Check size={13} strokeWidth={3} /> Copiado!</>
+            : <><Copy size={13} /> Copiar Prompt Mestre</>
           }
         </button>
 

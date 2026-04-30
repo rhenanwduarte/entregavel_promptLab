@@ -7,16 +7,16 @@ import { Search, Menu, Cpu } from 'lucide-react';
 
 // ─── Category Metadata ────────────────────────────────────────────────────────
 const CATEGORY_META = {
-  cosmetics:     { label: 'Cosmetics',       icon: 'Sparkles'        },
-  supplements:   { label: 'Supplements',     icon: 'FlaskConical'    },
-  branding:      { label: 'Branding',        icon: 'Tag'             },
-  automotive:    { label: 'Automotive',      icon: 'Car'             },
-  jewelry:       { label: 'Jewelry',         icon: 'Gem'             },
-  fashion:       { label: 'Fashion',         icon: 'Shirt'           },
-  food_beverage: { label: 'Food & Beverage', icon: 'UtensilsCrossed' },
-  home_decor:    { label: 'Home Décor',      icon: 'Home'            },
-  tech:          { label: 'Tech',            icon: 'Cpu'             },
-  universal:     { label: 'Universal',       icon: 'Globe'           },
+  cosmetics:     { label: 'Cosméticos',          icon: 'Sparkles'        },
+  supplements:   { label: 'Suplementos',         icon: 'FlaskConical'    },
+  branding:      { label: 'Branding',            icon: 'Tag'             },
+  automotive:    { label: 'Automotivo',           icon: 'Car'             },
+  jewelry:       { label: 'Joias',               icon: 'Gem'             },
+  fashion:       { label: 'Moda',                icon: 'Shirt'           },
+  food_beverage: { label: 'Alimentos & Bebidas', icon: 'UtensilsCrossed' },
+  home_decor:    { label: 'Decoração',           icon: 'Home'            },
+  tech:          { label: 'Tecnologia',          icon: 'Cpu'             },
+  universal:     { label: 'Universal',           icon: 'Globe'           },
 };
 
 const CATEGORIES = (() => {
@@ -136,7 +136,7 @@ const Dashboard = () => {
               />
             </div>
             <p className="text-[9px] sm:text-[10px] text-slate-600 font-bold tracking-[0.35em] uppercase mt-0.5 hidden sm:block">
-              Neural Engine · Prompt Database
+              Motor Neural · Banco de Prompts
             </p>
           </div>
 
@@ -144,16 +144,16 @@ const Dashboard = () => {
           <div className="hidden lg:flex items-center gap-6 bg-black/20 border border-white/[0.06] px-5 py-2.5 rounded-2xl flex-shrink-0">
             <div className="text-center">
               <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">Status</p>
-              <p className="text-xs font-black text-emerald-400 uppercase mt-0.5">Synced</p>
+              <p className="text-xs font-black text-emerald-400 uppercase mt-0.5">Sincronizado</p>
             </div>
             <div className="w-px h-6 bg-white/[0.08]" />
             <div className="text-center">
-              <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">Loaded</p>
+              <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">Carregados</p>
               <p className="text-xs font-black text-white uppercase mt-0.5">{filteredPrompts.length}</p>
             </div>
             <div className="w-px h-6 bg-white/[0.08]" />
             <div className="text-center">
-              <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">Categories</p>
+              <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">Categorias</p>
               <p className="text-xs font-black text-white uppercase mt-0.5">{CATEGORIES.length}</p>
             </div>
           </div>
@@ -180,7 +180,7 @@ const Dashboard = () => {
                 <Search className="ml-4 sm:ml-5 text-slate-600 flex-shrink-0" size={16} />
                 <input
                   type="text"
-                  placeholder={`Search in ${categoryMeta?.label}…`}
+                  placeholder={`Buscar em ${categoryMeta?.label}…`}
                   className="w-full bg-transparent py-3.5 sm:py-4 px-3 sm:px-4 text-sm sm:text-base
                              focus:outline-none text-white placeholder:text-slate-700 font-light"
                   value={searchTerm}
@@ -220,12 +220,12 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-48 gap-4">
-                <p className="text-slate-600 text-sm font-mono">// no results found</p>
+                <p className="text-slate-600 text-sm font-mono">// nenhum resultado encontrado</p>
                 <button
                   onClick={() => setSearchTerm('')}
                   className="text-xs text-slate-500 hover:text-slate-300 transition-colors border border-white/10 px-4 py-2.5 rounded-xl"
                 >
-                  Clear search
+                  Limpar busca
                 </button>
               </div>
             )}

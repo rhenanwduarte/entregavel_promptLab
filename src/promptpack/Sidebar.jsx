@@ -66,7 +66,7 @@ const Sidebar = ({ activeCategory, setActiveCategory, categories, theme, isOpen,
         <button
           onClick={onClose}
           className="md:hidden p-2 rounded-xl text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors"
-          aria-label="Close menu"
+          aria-label="Fechar menu"
         >
           <Icons.X size={18} />
         </button>
@@ -75,7 +75,7 @@ const Sidebar = ({ activeCategory, setActiveCategory, categories, theme, isOpen,
       <div className="mx-5 h-px bg-white/[0.05] mb-3" />
 
       <p className="px-6 text-[9px] font-black text-slate-600 uppercase tracking-[0.25em] mb-2">
-        Core Modules
+        Módulos Principais
       </p>
 
       {/* Navigation */}
@@ -133,12 +133,12 @@ const Sidebar = ({ activeCategory, setActiveCategory, categories, theme, isOpen,
               <div className="absolute inset-0 bg-emerald-500 rounded-full animate-ping opacity-60" />
             </div>
             <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.25em]">
-              System Active
+              Sistema Ativo
             </span>
           </div>
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-700 mt-1">
             <span>100 prompts</span>
-            <span>10 categories</span>
+            <span>10 categorias</span>
           </div>
           <div className="h-[2px] w-full bg-white/[0.04] rounded-full overflow-hidden mt-2">
             <div

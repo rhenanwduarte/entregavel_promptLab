@@ -37,28 +37,28 @@ export default function Success() {
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
-            Purchase Successful
+            Compra Realizada com Sucesso
           </h1>
 
           <p className="text-[#a0a5b1]/80 text-base sm:text-lg mb-6 leading-relaxed">
-            Your PromptLab access has been provisioned securely.
+            Seu acesso ao PromptLab foi provisionado com segurança.
           </p>
 
           <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4" />
 
           <p className="text-sm text-[#717888] mb-1 font-medium tracking-wide">
-            We have sent your access details to your email inbox.
+            Enviamos os detalhes de acesso para sua caixa de entrada.
           </p>
           <p className="text-xs text-[#717888]/50 italic mb-8">
-            Please use your email to log in through the access page.
+            Por favor, use seu e-mail para fazer login na página de acesso.
           </p>
 
           {/* CTA Button */}
           <Link 
             to="/"
-            className="group relative flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg shadow-blue-600/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-600/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
-            Access Dashboard
+            Acessar Dashboard
             <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
